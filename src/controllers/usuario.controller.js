@@ -102,22 +102,7 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-//Metodo GET para obtener el perfil de usuario 
-const obtenerPerfil =  async (req, res, next) => {
-    try {
-        const id = req.user.id_usuario;            // viene del JWT
-        const usuario = await usuarioService.findUsuarioById(id);
-        if (!usuario) return res.status(404).json({ error: 'Usuario no encontrado' });
-        // Solo devolvemos lo que queremos exponer
-        res.json({
-          id_usuario: usuario.id_usuario,
-          email: usuario.email,
-          telefono: usuario.telefono
-        });
-      } catch (err) {
-        next(err);
-      }
-}
+
 
 const solicitarCodigo = async (req, res, next) => {
     try {
@@ -280,6 +265,28 @@ const actualizarTelefono = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 };
+
+const obtenerPerfil = async (req, res, next) => {
+    try {
+      const id = req.user.id_usuario;
+  
+      const usuario = await usuarioService.findUsuarioById(id);
+  
+      // 3) Si no existe, devolvemos 404
+      if (!usuario) {
+        return res.status(404).json({ error: 'Usuario no encontrado' });
+      }
+  
+      // 4) Respondemos solo con los campos públicos
+      res.json({
+        id_usuario: usuario.id_usuario,
+        email:      usuario.email,
+        telefono:   usuario.telefono
+      });
+    } catch (err) {
+      next(err);
+    }
+  };
 
 module.exports = {
     registrarUsuario,
