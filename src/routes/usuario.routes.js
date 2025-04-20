@@ -1,13 +1,9 @@
 const express = require('express');
-const router = express.Router();
+const router  = express.Router();
 const usuarioController = require('../controllers/usuario.controller');
+const { authenticateToken } = require('../middleware/auth.middleware.js');
 
-/**
- * @swagger
- * tags:
- *   name: Usuarios
- *   description: Gestión de usuarios
- */
+
 
 /**
  * @swagger
@@ -96,7 +92,6 @@ router.post('/solicitar-codigo', usuarioController.solicitarCodigo);
  *             properties:
  *               token_recuperacion:
  *                 type: string
- *                 description: Código de verificación enviado al usuario
  *     responses:
  *       200:
  *         description: Código verificado correctamente
@@ -120,51 +115,21 @@ router.post('/verificar-codigo', usuarioController.verificarCodigo);
  *             properties:
  *               nuevaContrasena:
  *                 type: string
- *                 description: Nueva contraseña del usuario
  *               confirmarContrasena:
  *                 type: string
- *                 description: Confirmar nueva contraseña del usuario
  *     responses:
  *       200:
  *         description: Contraseña actualizada exitosamente
  *       400:
- *         description: Las contraseñas no coinciden
- *       404:
- *         description: No se ha verificado el código de recuperación
+ *         description: Contraseñas no coinciden o datos inválidos
  */
 router.post('/restablecer-contrasena', usuarioController.restablecerContrasena);
 
+
 /**
- * @swagger
- * components:
- *   schemas:
- *     ActualizarTelefonoDTO:
- *       type: object
- *       required:
- *         - telefono
- *       properties:
- *         telefono:
- *           type: string
- *           pattern: '^\d{10}$'
- *     VerificarContrasenaDTO:
- *       type: object
- *       required:
- *         - contrasena_actual
- *       properties:
- *         contrasena_actual:
- *           type: string
- *     ActualizarContrasenaDTO:
- *       type: object
- *       required:
- *         - contrasena_nueva
- *         - confirmar_contrasena
- *       properties:
- *         contrasena_nueva:
- *           type: string
- *           minLength: 8
- *         confirmar_contrasena:
- *           type: string
+ * Todas las rutas siguientes requieren un JWT válido
  */
+router.use(authenticateToken);
 
 /**
  * @swagger
@@ -179,7 +144,12 @@ router.post('/restablecer-contrasena', usuarioController.restablecerContrasena);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/ActualizarTelefonoDTO'
+ *             type: object
+ *             required: [telefono]
+ *             properties:
+ *               telefono:
+ *                 type: string
+ *                 pattern: '^\d{10}$'
  *     responses:
  *       200:
  *         description: Teléfono actualizado correctamente
@@ -203,12 +173,16 @@ router.patch('/telefono', usuarioController.actualizarTelefono);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/VerificarContrasenaDTO'
+ *             type: object
+ *             required: [contrasena_actual]
+ *             properties:
+ *               contrasena_actual:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Contraseña verificada correctamente
  *       401:
- *         description: Contraseña incorrecta
+ *         description: Contraseña incorrecta o no autorizado
  *       400:
  *         description: Datos inválidos
  */
@@ -218,7 +192,7 @@ router.post('/verificar-contrasena', usuarioController.verificarContrasena);
  * @swagger
  * /usuario/contrasena:
  *   patch:
- *     summary: Actualizar contraseña
+ *     summary: Actualizar contraseña del usuario
  *     tags: [Usuarios]
  *     security:
  *       - BearerAuth: []
@@ -227,7 +201,13 @@ router.post('/verificar-contrasena', usuarioController.verificarContrasena);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/ActualizarContrasenaDTO'
+ *             type: object
+ *             required: [contrasena_nueva, confirmar_contrasena]
+ *             properties:
+ *               contrasena_nueva:
+ *                 type: string
+ *               confirmar_contrasena:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Contraseña actualizada correctamente
@@ -252,13 +232,10 @@ router.patch('/contrasena', usuarioController.actualizarContrasena);
  *         application/json:
  *           schema:
  *             type: object
+ *             required: [contrasena]
  *             properties:
- *               email:
- *                 type: string
- *                 format: email
  *               contrasena:
  *                 type: string
- *                 minLength: 8
  *     responses:
  *       200:
  *         description: Cuenta eliminada exitosamente
@@ -266,10 +243,7 @@ router.patch('/contrasena', usuarioController.actualizarContrasena);
  *         description: Datos inválidos o contraseña incorrecta
  *       401:
  *         description: No autorizado
- *       403:
- *         description: No tienes permiso para eliminar esta cuenta
  */
 router.delete('/eliminar', usuarioController.eliminarUsuario);
-
 
 module.exports = router;
