@@ -32,12 +32,17 @@ app.use(session({
   cookie: { secure: false },
 }));
 
-// 3) CORS dinámico
-const allowedOrigin = process.env.CORS_ORIGIN || 'http://localhost:3000';
+// 3) CORS 
+const rawOrigins = process.env.CORS_ORIGIN || '';
+const allowedOrigins = rawOrigins
+  .split(',')
+  .map(origin => origin.trim())
+  .filter(origin => origin.length > 0);
+
 app.use(cors({
-  origin: allowedOrigin,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  origin: allowedOrigins,
+  methods: ['GET','POST','PUT','DELETE'],
+  allowedHeaders: ['Content-Type','Authorization']
 }));
 
 // 4) Parsers y logging
