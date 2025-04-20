@@ -31,7 +31,7 @@ const testConnection = async (retries = 3, delay = 2000) => {
     });
 
     //KEEP ALIVE METHOD para que la conexion no de timeout cuando se despliegue 
-    const KEEP_ALIVE_URL = process.env.KEEP_ALIVE_URL || 'https://<tu-servicio>.onrender.com';
+    const KEEP_ALIVE_URL = process.env.KEEP_ALIVE_URL || 'https://lookmatchbackend.onrender.com';
 
     setInterval(async () => {
       try {
