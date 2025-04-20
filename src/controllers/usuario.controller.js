@@ -102,6 +102,23 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+//Metodo GET para obtener el perfil de usuario 
+const obtenerPerfil =  async (req, res, next) => {
+    try {
+        const id = req.user.id_usuario;            // viene del JWT
+        const usuario = await usuarioService.findUsuarioById(id);
+        if (!usuario) return res.status(404).json({ error: 'Usuario no encontrado' });
+        // Solo devolvemos lo que queremos exponer
+        res.json({
+          id_usuario: usuario.id_usuario,
+          email: usuario.email,
+          telefono: usuario.telefono
+        });
+      } catch (err) {
+        next(err);
+      }
+}
+
 const solicitarCodigo = async (req, res, next) => {
     try {
         const { email } = req.body;
@@ -273,5 +290,6 @@ module.exports = {
     actualizarTelefono,
     verificarContrasena,
     actualizarContrasena,
-    eliminarUsuario
+    eliminarUsuario,
+    obtenerPerfil
 };

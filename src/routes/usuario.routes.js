@@ -190,6 +190,38 @@ router.post('/verificar-contrasena', usuarioController.verificarContrasena);
 
 /**
  * @swagger
+ * /usuario/perfil:
+ *   get:
+ *     summary: Obtener datos del usuario autenticado
+ *     tags: [Usuarios]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Perfil del usuario
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id_usuario:
+ *                   type: integer
+ *                   example: 12
+ *                 email:
+ *                   type: string
+ *                   example: "juan@ejemplo.com"
+ *                 telefono:
+ *                   type: string
+ *                   example: "5512345678"
+ *       401:
+ *         description: No autorizado (token faltante o inválido)
+ *       404:
+ *         description: Usuario no encontrado
+ */
+router.get('/perfil', authenticateToken, usuarioController.obtenerPerfil);
+
+/**
+ * @swagger
  * /usuario/contrasena:
  *   patch:
  *     summary: Actualizar contraseña del usuario

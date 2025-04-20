@@ -160,6 +160,14 @@ const actualizarTelefono = async (id_usuario, telefono) => {
     }
 };
 
+const encontrarUsuarioID = async (id_usuario) => {
+    const usuario = await usuarioModel.findUsuarioById(id_usuario);
+    if (!usuario) {
+      throw new Error('Usuario no encontrado');
+    }
+    return usuario;
+  };
+
 module.exports = {
     registrarUsuario,
     authenticateUsuario,
@@ -171,5 +179,6 @@ module.exports = {
     actualizarTelefono,
     verificarContrasena,
     actualizarContrasena,
-    eliminarUsuario
+    eliminarUsuario,
+    encontrarUsuarioID
 };
