@@ -7,7 +7,7 @@ const swaggerUi    = require('swagger-ui-express');
 const SwaggerJsdoc = require('swagger-jsdoc');
 const session      = require('express-session');
 const fileUpload   = require('express-fileupload');
-const basicAuth    = require('express-basic-auth');           // <–– Importar express-basic-auth
+const basicAuth    = require('express-basic-auth');           
 const { pool }     = require('./src/config/dbConfig');
 
 // Importar rutas de API
@@ -21,8 +21,7 @@ const stackRoutes        = require('./src/routes/stack.routes.js');
 
 const app = express();
 
-// 1) Servir los archivos estáticos de Flutter Web
-const flutterWebPath = path.resolve('Agregar la ruta correspondiente');
+
 app.use(express.static(flutterWebPath));
 
 // 2) Configuración de sesión (MemoryStore no recomendado en producción)
@@ -52,7 +51,7 @@ app.use(
   ['/api-docs', '/swagger.json'],
   basicAuth({
     users: {
-      [process.env.SWAGGER_USER]: process.env.SWAGGER_PASSWORD  
+      [process.env.SWAGGER_USER]: process.env.SWAGGER_PASSWORD 
     },
     challenge: true,
     realm: 'Admin Area'
@@ -85,10 +84,7 @@ app.use('/api/color',        colorRoutes);
 app.use('/api/outfits',      outfitRoutes);
 app.use('/api/stacks',       stackRoutes);
 
-// 8) Fallback SPA
-app.get(/^\/(?!api).*/, (req, res) => {
-  res.sendFile(path.join(flutterWebPath, 'index.html'));
-});
+
 
 // 9) 404 para rutas no encontradas
 app.use((req, res) => {
