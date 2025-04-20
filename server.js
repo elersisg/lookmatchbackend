@@ -2,7 +2,7 @@ require('dotenv').config();
 const chalk = require('chalk');
 const app = require('./app.js');
 const { pool } = require('./src/config/dbConfig.js');
-const fetch = require('node-fetch');
+const axios = require('axios');           // <–– usa axios
 
 const PORT = process.env.PORT || 3000;
 app.set('port', PORT);
@@ -36,13 +36,12 @@ const testConnection = async (retries = 3, delay = 2000) => {
 
     setInterval(async () => {
       try {
-        const res = await fetch(KEEP_ALIVE_URL);
-        console.log(chalk.gray (`Keepalive ping status ${res.status}`));
-      }catch (err) {
-        console.error(chalk.red ('Keepalive ping failed:'),err.message);
-
+        const res = await axios.get(KEEP_ALIVE_URL);
+        console.log(chalk.gray(`Keepalive HTTP ping status: ${res.status}`));
+      } catch (err) {
+        console.error(chalk.red('Keepalive HTTP ping failed:'), err.message);
       }
-    }, 15 * 60 * 1000);
+    }, 15 * 60 * 1000); // cada 15 minutos
 
     //KEEP ALIVE METHOD para la base de datos
     setInterval(async () => {
