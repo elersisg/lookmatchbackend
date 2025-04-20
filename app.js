@@ -7,7 +7,7 @@ const swaggerUi    = require('swagger-ui-express');
 const SwaggerJsdoc = require('swagger-jsdoc');
 const session      = require('express-session');
 const fileUpload   = require('express-fileupload');
-const basicAuth    = require('express-basic-auth');           
+const basicAuth    = require('express-basic-auth');           // <–– Importar express-basic-auth
 const { pool }     = require('./src/config/dbConfig');
 
 // Importar rutas de API
@@ -22,7 +22,7 @@ const stackRoutes        = require('./src/routes/stack.routes.js');
 const app = express();
 
 
-app.use(express.static(flutterWebPath));
+
 
 // 2) Configuración de sesión (MemoryStore no recomendado en producción)
 app.use(session({
@@ -51,7 +51,7 @@ app.use(
   ['/api-docs', '/swagger.json'],
   basicAuth({
     users: {
-      [process.env.SWAGGER_USER]: process.env.SWAGGER_PASSWORD 
+      [process.env.SWAGGER_USER]: process.env.SWAGGER_PASSWORD  // <–– Usa SWAGGER_PASS, no SWAGGER_PASSWORD
     },
     challenge: true,
     realm: 'Admin Area'
