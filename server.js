@@ -2,6 +2,7 @@ require('dotenv').config();
 const chalk = require('chalk');
 const app = require('./app.js');
 const { pool } = require('./src/config/dbConfig.js');
+const fetch = require('node-fetch');
 
 const PORT = process.env.PORT || 3000;
 app.set('port', PORT);
