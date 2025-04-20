@@ -75,12 +75,16 @@ const swaggerOptions = {
 const swaggerDocs = SwaggerJsdoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-// Mensaje para la api 
-app.get('/', (req, res) => {
-  res.json({
+// Handler GET /api para devolver un status en la raíz de la API
+app.get('/api', (req, res) => {
+  return res.json({
     status: 'OK',
     message: 'API de Lookmatch activa — documentación en /api-docs'
   });
+});
+
+app.get('/', (req, res) => {
+  res.redirect('/api');
 });
 
 // 7) Rutas de API
