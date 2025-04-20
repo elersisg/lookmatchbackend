@@ -84,7 +84,10 @@ app.use('/api/color',        colorRoutes);
 app.use('/api/outfits',      outfitRoutes);
 app.use('/api/stacks',       stackRoutes);
 
-
+// Mensaje para la api 
+app.get('/servidor', (req, res) => {
+  res.json({ message: 'API de Lookmatch está activa. Documentación en /api-docs' });
+});
 
 // 9) 404 para rutas no encontradas
 app.use((req, res) => {
