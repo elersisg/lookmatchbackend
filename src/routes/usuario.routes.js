@@ -125,21 +125,6 @@ router.post('/verificar-codigo', usuarioController.verificarCodigo);
  */
 router.post('/restablecer-contrasena', usuarioController.restablecerContrasena);
 
-/**
- * @swagger
- * /usuario/perfil:
- *   get:
- *     summary: Obtener perfil del usuario autenticado
- *     tags: [Usuarios]
- *     responses:
- *       200:
- *         description: Perfil del usuario
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/PerfilUsuario'
- */
-router.get('/perfil', usuarioController.obtenerPerfil);
 
 /**
  * Todas las rutas siguientes requieren un JWT válido
@@ -292,5 +277,7 @@ router.patch('/contrasena', usuarioController.actualizarContrasena);
  *         description: No autorizado
  */
 router.delete('/eliminar', usuarioController.eliminarUsuario);
+
+
 
 module.exports = router;
