@@ -146,6 +146,8 @@ const eliminarUsuario = async (email, contrasena) => {
     }
 };
 
+
+
 module.exports = {
     registrarUsuario,
     findUsuarioByEmail,
