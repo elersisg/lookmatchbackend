@@ -266,24 +266,18 @@ const actualizarTelefono = async (req, res) => {
     }
 };
 
-const obtenerPerfil = async (req, res, next) => {
+const obtenerPerfilPorEmail = async (req, res, next) => {
     try {
-      const id = req.user.id_usuario;
-  
-      const usuario = await usuarioService.findUsuarioById(id);
-  
-      // 3) Si no existe, devolvemos 404
-      if (!usuario) {
-        return res.status(404).json({ error: 'Usuario no encontrado' });
+      const { email } = req.query;
+      if (!email) {
+        return res.status(400).json({ error: 'El parámetro email es requerido' });
       }
-  
-      // 4) Respondemos solo con los campos públicos
-      res.json({
-        id_usuario: usuario.id_usuario,
-        email:      usuario.email,
-        telefono:   usuario.telefono
-      });
+      const perfil = await usuarioService.obtenerPerfilPorEmail(email);
+      res.json(perfil);
     } catch (err) {
+      if (err.message === 'Usuario no encontrado') {
+        return res.status(404).json({ error: err.message });
+      }
       next(err);
     }
   };
@@ -298,5 +292,5 @@ module.exports = {
     verificarContrasena,
     actualizarContrasena,
     eliminarUsuario,
-    obtenerPerfil
+    obtenerPerfilPorEmail
 };

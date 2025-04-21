@@ -1,6 +1,5 @@
 const { pool } = require('../config/dbConfig.js');
 const bcrypt = require('bcrypt');
-const { obtenerPerfil } = require('../controllers/usuario.controller.js');
 
 const registrarUsuario = async (email, contrasena, telefono) => {
     try {
@@ -147,13 +146,6 @@ const eliminarUsuario = async (email, contrasena) => {
     }
 };
 
-const obtenerperfil = await pool.query(
-    'SELECT id_usuario, email, telefono FROM usuario WHERE id_usuario = $1',
-    [id]
-  );
-  return result.rows[0];
-  
-
 module.exports = {
     registrarUsuario,
     findUsuarioByEmail,
@@ -164,6 +156,5 @@ module.exports = {
     actualizarContrasena,
     guardarTokenRecuperacion,
     eliminarTokenRecuperacion,
-    eliminarUsuario,
-    obtenerperfil
+    eliminarUsuario
 };

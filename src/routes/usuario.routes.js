@@ -218,7 +218,7 @@ router.post('/verificar-contrasena', usuarioController.verificarContrasena);
  *       404:
  *         description: Usuario no encontrado
  */
-router.get('/perfil', authenticateToken, usuarioController.obtenerPerfil);
+router.get('/perfil', authenticateToken, usuarioController.obtenerPerfilPorEmail);
 
 /**
  * @swagger
