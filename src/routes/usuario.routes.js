@@ -158,7 +158,7 @@ router.use(authenticateToken);
  *       401:
  *         description: No autorizado
  */
-router.patch('/telefono', usuarioController.actualizarTelefono);
+router.patch('/telefono', authenticateToken,  usuarioController.actualizarTelefono);
 
 /**
  * @swagger
@@ -186,7 +186,7 @@ router.patch('/telefono', usuarioController.actualizarTelefono);
  *       400:
  *         description: Datos inválidos
  */
-router.post('/verificar-contrasena', usuarioController.verificarContrasena);
+router.post('/verificar-contrasena', authenticateToken,  usuarioController.verificarContrasena);
 
 /**
  * @swagger
@@ -248,7 +248,7 @@ router.get('/perfil', authenticateToken, usuarioController.obtenerPerfilPorEmail
  *       401:
  *         description: No autorizado
  */
-router.patch('/contrasena', usuarioController.actualizarContrasena);
+router.patch('/contrasena', authenticateToken, usuarioController.actualizarContrasena);
 
 /**
  * @swagger
@@ -276,7 +276,7 @@ router.patch('/contrasena', usuarioController.actualizarContrasena);
  *       401:
  *         description: No autorizado
  */
-router.delete('/eliminar', usuarioController.eliminarUsuario);
+router.delete('/eliminar', authenticateToken,  usuarioController.eliminarUsuario);
 
 
 
