@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
+
 // Crear usuario
 const registrarUsuario = async (data) => {
     const { email, contrasena, telefono } = data;
@@ -20,6 +21,13 @@ const obtenerPerfil = async (id_usuario) => {
     return usuario;
 };
 
+async function findUsuarioById(id_usuario) {
+    const usuario = await usuarioModel.findUsuarioById(id_usuario);
+    if (!usuario) {
+      throw new Error('Usuario no encontrado');
+    }
+    return usuario;
+}
 
 //  Buscar usuario por email
 const findUsuarioByEmail = async (email) => {
@@ -182,5 +190,6 @@ module.exports = {
     verificarContrasena,
     actualizarContrasena,
     eliminarUsuario,
-    obtenerPerfil
+    obtenerPerfil,
+    findUsuarioById
 };
