@@ -20,14 +20,12 @@ const transporter = nodemailer.createTransport({
  */
 async function registrarUsuario({ email, contrasena, telefono }) {
   const existente = await findUsuarioByEmail(email);
-  if (existente) {
-    throw new Error('El correo ya está registrado');
-  }
+  if (existente) throw new Error('El correo ya está registrado');
   return await usuarioModel.registrarUsuario(email, contrasena, telefono);
 }
 
 /**
- * Busca un usuario por email
+ * Busca un usuario por email (devuelve todos los campos de la tabla)
  */
 async function findUsuarioByEmail(email) {
   return await usuarioModel.findUsuarioByEmail(email);
@@ -78,18 +76,9 @@ async function verificarCodigo(token_recuperacion) {
 }
 
 /**
- * Guarda explícitamente un token de recuperación (si lo necesitas por separado)
- */
-async function guardartokenRecuperacion(email, token, expiracion) {
-  await usuarioModel.guardarTokenRecuperacion(email, token, expiracion);
-  return 'Token guardado';
-}
-
-/**
  * Restablece la contraseña usando el token de recuperación
  */
 async function restablecerContrasena(contrasenaEncriptada, token_recuperacion) {
-  // Asumimos que verificarCodigo ya validó el token
   await usuarioModel.restablecerContrasena(contrasenaEncriptada, token_recuperacion);
   await usuarioModel.eliminarTokenRecuperacion(token_recuperacion);
   return 'Contraseña actualizada';
@@ -148,6 +137,21 @@ async function findUsuarioById(id_usuario) {
   return usuario;
 }
 
+/**
+ * --- Nuevo método ---
+ * Obtiene sólo los campos esenciales del perfil a partir del email
+ */
+async function obtenerPerfilPorEmail(email) {
+  const usuario = await usuarioModel.findUsuarioByEmail(email);
+  if (!usuario) throw new Error('Usuario no encontrado');
+  // Devuelvo únicamente lo que el frontend necesita
+  return {
+    id_usuario: usuario.id_usuario,
+    email:      usuario.email,
+    telefono:   usuario.telefono,
+  };
+}
+
 module.exports = {
   registrarUsuario,
   authenticateUsuario,
@@ -155,10 +159,11 @@ module.exports = {
   findUsuarioById,
   solicitarCodigo,
   verificarCodigo,
-  guardartokenRecuperacion,
   restablecerContrasena,
   actualizarTelefono,
   verificarContrasena,
   actualizarContrasena,
   eliminarUsuario,
+  // exportamos el nuevo método
+  obtenerPerfilPorEmail,
 };
