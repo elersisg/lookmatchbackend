@@ -278,4 +278,23 @@ router.patch('/contrasena', usuarioController.actualizarContrasena);
  */
 router.delete('/eliminar', usuarioController.eliminarUsuario);
 
+/**
+ * @swagger
+ * /usuario/perfil:
+ *   get:
+ *     summary: Obtener perfil del usuario autenticado
+ *     tags: [Usuarios]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Perfil del usuario
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/PerfilUsuario'
+ */
+router.get('/perfil', authenticateToken, usuarioController.obtenerPerfil);
+
+
 module.exports = router;

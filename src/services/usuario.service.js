@@ -14,6 +14,13 @@ const registrarUsuario = async (data) => {
     return await usuarioModel.registrarUsuario(email, contrasena, telefono);
 };
 
+const obtenerPerfil = async (id_usuario) => {
+    const usuario = await findUsuarioById(id_usuario);
+    if (!usuario) throw new Error('Usuario no encontrado');
+    return usuario;
+};
+
+
 //  Buscar usuario por email
 const findUsuarioByEmail = async (email) => {
     return await usuarioModel.findUsuarioByEmail(email);
@@ -171,5 +178,6 @@ module.exports = {
     actualizarTelefono,
     verificarContrasena,
     actualizarContrasena,
-    eliminarUsuario
+    eliminarUsuario,
+    obtenerPerfil
 };

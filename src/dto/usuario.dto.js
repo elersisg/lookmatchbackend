@@ -49,4 +49,20 @@ const EliminarUsuarioDTO = Joi.object({
   contrasena: Joi.string().min(8).required(),
 });
 
-module.exports = { RegistrarUsuarioDTO, AuthenticateUsuarioDTO, VerificarCodigoDTO, ActualizarTelefonoDTO, VerificarContrasenaDTO, ActualizarContrasenaDTO, EliminarUsuarioDTO, RestablecerContrasenaDTO };
+const PerfilUsuarioResponseDTO = Joi.object({
+  id_usuario: Joi.number().integer().required(),
+  email:      Joi.string().email().required(),
+  telefono:   Joi.string().length(10).pattern(/^[0-9]+$/).optional()
+});
+
+
+module.exports = { RegistrarUsuarioDTO, 
+  AuthenticateUsuarioDTO, 
+  VerificarCodigoDTO, 
+  ActualizarTelefonoDTO, 
+  VerificarContrasenaDTO, 
+  ActualizarContrasenaDTO, 
+  EliminarUsuarioDTO, 
+  RestablecerContrasenaDTO,
+  PerfilUsuarioResponseDTO 
+};

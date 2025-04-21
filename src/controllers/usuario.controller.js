@@ -20,6 +20,18 @@ const validarContrasena = (contrasena) => {
     }
 };
 
+const obtenerPerfil = async (req, res, next) => {
+    try {
+      const id_usuario = req.user.id_usuario;           // viene de authenticateToken
+      const usuario = await usuarioService.obtenerPerfil(id_usuario);
+      // Validamos la forma de la respuesta (opcional pero recomendado)
+      const perfilValidado = await PerfilUsuarioResponseDTO.validateAsync(usuario);
+      res.json(perfilValidado);
+    } catch (err) {
+      next(err);
+    }
+  };
+
 //Función para registrar un nuevo usuario
 const registrarUsuario = async (req, res, next) => {
     try {
@@ -282,6 +294,8 @@ const obtenerPerfilPorEmail = async (req, res, next) => {
     }
   };
 
+  
+
 module.exports = {
     registrarUsuario,
     autenticarUsuario,
@@ -292,5 +306,6 @@ module.exports = {
     verificarContrasena,
     actualizarContrasena,
     eliminarUsuario,
-    obtenerPerfilPorEmail
+    obtenerPerfilPorEmail,
+    obtenerPerfil
 };
