@@ -56,6 +56,5 @@ module.exports = { RegistrarUsuarioDTO,
   VerificarContrasenaDTO, 
   ActualizarContrasenaDTO, 
   EliminarUsuarioDTO, 
-  RestablecerContrasenaDTO,
-  PerfilUsuarioResponseDTO 
+  RestablecerContrasenaDTO 
 };
