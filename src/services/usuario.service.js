@@ -23,7 +23,10 @@ const obtenerPerfil = async (id_usuario) => {
 
 //  Buscar usuario por email
 const findUsuarioByEmail = async (email) => {
-    return await usuarioModel.findUsuarioByEmail(email);
+    const usuario = await usuarioModel.findUsuarioByEmail(email);
+    // Si tu modelo devuelve null o undefined, aquí lanzas:
+    if (!usuario) throw new Error('Usuario no encontrado');
+    return usuario;
 };
 
 const authenticateUsuario = async (email, contrasena) => {
