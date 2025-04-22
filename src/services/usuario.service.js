@@ -7,13 +7,15 @@ require('dotenv').config();
 // Crear usuario
 const registrarUsuario = async (data) => {
     const { email, contrasena, telefono } = data;
-
-    // Verificar si el usuario ya existe
+  
+    // Verificar si el usuario ya existe (findUsuarioByEmail ya no lanza)
     const usuarioExistente = await findUsuarioByEmail(email);
-    if (usuarioExistente) throw new Error('El correo ya está registrado');
-
+    if (usuarioExistente) {
+      throw new Error('El correo ya está registrado');
+    }
+  
     return await usuarioModel.registrarUsuario(email, contrasena, telefono);
-};
+  };
 
 const obtenerPerfil = async (id_usuario) => {
     const usuario = await findUsuarioById(id_usuario);
@@ -27,14 +29,12 @@ async function findUsuarioById(id_usuario) {
       throw new Error('Usuario no encontrado');
     }
     return usuario;
-}
+  }
 
 //  Buscar usuario por email
 const findUsuarioByEmail = async (email) => {
-    const usuario = await usuarioModel.findUsuarioByEmail(email);
-    // Si tu modelo devuelve null o undefined, aquí lanzas:
-    if (!usuario) throw new Error('Usuario no encontrado');
-    return usuario;
+    // devuelve usuario o undefined si no lo encuentra
+    return await usuarioModel.findUsuarioByEmail(email);
 };
 
 const authenticateUsuario = async (email, contrasena) => {
@@ -191,5 +191,6 @@ module.exports = {
     actualizarContrasena,
     eliminarUsuario,
     obtenerPerfil,
-    findUsuarioById
+    findUsuarioById,
+    findUsuarioByEmail
 };
