@@ -3,22 +3,6 @@ const fs = require('fs-extra');
 const { uploadImage } = require ('../middleware/cloudinary.js');
 const RegistrarPrendaDTO = require('../dto/prenda.dto');
 
-// const subirImagen = async (req, res) => {
-//   try {
-//     if (!req.files || !req.files.image) {
-//       return res.status(400).json({ error: 'No se ha enviado ninguna imagen.' });
-//     }
-//     const result = await uploadImage(req.files.image.tempFilePath);
-//     await fs.unlink(req.files.image.tempFilePath);  
-//     res.status(200).json({ 
-//       public_id: result.public_id, 
-//       secure_url: result.secure_url,
-//       ruta: result.secure_url
-//     });
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
 
 const subirImagen = async (req, res) => {
   try {

@@ -64,6 +64,7 @@ app.use(
 );
 
 // 6) Configuración de Swagger
+const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
 const swaggerOptions = {
   definition: {
     openapi: '3.0.0',
@@ -73,7 +74,7 @@ const swaggerOptions = {
         BearerAuth: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }
       }
     },
-    servers: [{ url: `http://localhost:${process.env.PORT||3000}/api`, description: 'Servidor de desarrollo' }]
+    servers: [{ url: `${BASE_URL}/api`, description: 'API Lookmatch' }]
   },
   apis: ['./src/routes/*.js'],
 };

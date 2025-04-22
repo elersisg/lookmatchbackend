@@ -5,7 +5,11 @@ const { pool } = require('./src/config/dbConfig.js');
 const axios = require('axios');           // <–– usa axios
 
 const PORT = process.env.PORT || 3000;
+
+const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`;
+
 app.set('port', PORT);
+
 
 // Función con reintentos
 const testConnection = async (retries = 3, delay = 2000) => {
@@ -27,12 +31,12 @@ const testConnection = async (retries = 3, delay = 2000) => {
     console.log(chalk.green.bold('Conexión a PostgreSQL establecida'));
 
     app.listen(PORT, () => {
-      console.log(chalk.green(`Servidor en http://localhost:${PORT}`));
-      console.log(chalk.blue(`Swagger: http://localhost:${PORT}/api-docs`));
+      console.log(chalk.green(`Servidor en ${BASE_URL}`));
+      console.log(chalk.blue(`Swagger: ${BASE_URL}/api-docs`));
     });
 
     //KEEP ALIVE METHOD para que la conexion no de timeout cuando se despliegue 
-    const KEEP_ALIVE_URL = process.env.KEEP_ALIVE_URL || 'https://lookmatchbackend.onrender.com';
+    const KEEP_ALIVE_URL = process.env.KEEP_ALIVE_URL || BASE_URL;
 
     setInterval(async () => {
       try {
