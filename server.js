@@ -43,17 +43,6 @@ const testConnection = async (retries = 3, delay = 2000) => {
       }
     }, 15 * 60 * 1000); // cada 15 minutos
 
-    //KEEP ALIVE METHOD para la base de datos
-    setInterval(async () => {
-      try {
-        await pool.query('SELECT 1');
-        console.log(chalk.gray('Keepalive DB ping OK'));
-      } catch (err) {
-        console.error(chalk.red('Keepalive DB ping failed:'), err.message);
-      }
-    }, 10 * 60 * 1000); // cada 10 minutos
-
-
   } catch (error) {
     console.error(chalk.red.bold('Error crítico:'), error.message);
     console.log(chalk.yellow('Verifica:'));
