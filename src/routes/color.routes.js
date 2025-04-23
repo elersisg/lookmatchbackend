@@ -7,7 +7,7 @@ router.use(authenticateToken);
 
 /**
  * @swagger
- * /api/color/disponibles:
+ * /color/disponibles:
  *   get:
  *     summary: Obtiene todos los colores registrados
  *     tags: [Color]
@@ -21,7 +21,7 @@ router.get("/disponibles", colorController.obtenerColores);
 
 /**
  * @swagger
- * /api/color/existe/{idColor}:
+ * /color/existe/{idColor}:
  *   get:
  *     summary: Verifica si un color existe por su ID
  *     tags: [Color]
@@ -50,7 +50,7 @@ router.get("/existe/:idColor", colorController.existeColor);
 
 /**
  * @swagger
- * /api/color/buscar/{nombreColor}:
+ * /color/buscar/{nombreColor}:
  *   get:
  *     summary: Busca un color por su nombre principal
  *     tags: [Color]

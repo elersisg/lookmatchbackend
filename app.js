@@ -75,7 +75,7 @@ const swaggerOptions = {
     security: [{ BearerAuth: [] }],
     servers: [
       {
-        url: `${process.env.BASE_URL}/api`,
+        url: `${process.env.BASE_URL}`,
         description: 'Servidor principal'
       }
     ]
