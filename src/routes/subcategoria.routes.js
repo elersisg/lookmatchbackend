@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const subcategoriaController = require('../controllers/subcategoria.controller');
-const { authenticateToken } = require('../middleware/auth.middleware.js');
-router.use(authenticateToken);  // a partir de aquí, todo requiere JWT
 
 /**
  * @swagger

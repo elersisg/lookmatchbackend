@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { authenticateToken } = require('../middleware/auth.middleware.js');
 const categoriaController = require('../controllers/categoria.controller');
 
-router.use(authenticateToken);
 
 /**
  * @swagger
@@ -18,8 +16,6 @@ router.use(authenticateToken);
  *   get:
  *     summary: Obtener todas las categorías disponibles
  *     tags: [Categorías]
- *     security:
- *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: Lista de categorías disponibles
@@ -35,6 +31,6 @@ router.use(authenticateToken);
  *                   nombre_categoria:
  *                     type: string
  */
-router.get('/categorias', authenticateToken, categoriaController.obtenerCategorias);
+router.get('/categorias', categoriaController.obtenerCategorias);
 
 module.exports = router;

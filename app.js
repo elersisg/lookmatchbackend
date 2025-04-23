@@ -4,10 +4,10 @@ const path         = require('path');
 const cors         = require('cors');
 const morgan       = require('morgan');
 const swaggerUi    = require('swagger-ui-express');
+const basicAuth    = require('express-basic-auth');           // <–– Importar express-basic-auth
 const SwaggerJsdoc = require('swagger-jsdoc');
 const session      = require('express-session');
 const fileUpload   = require('express-fileupload');
-const basicAuth    = require('express-basic-auth');           // <–– Importar express-basic-auth
 const { pool }     = require('./src/config/dbConfig');
 
 // Importar rutas de API
@@ -110,14 +110,15 @@ app.get('/', (req, res) => {
   res.redirect('/api');
 });
 
+
 // 7) Rutas de API
 app.use('/api/usuario', usuarioRoutes);
 app.use('/api/prenda',  prendaRoutes);
-app.use('/api/categoria',    categoriaRoutes);
-app.use('/api/subcategoria', subcategoriaRoutes);
 app.use('/api/color',        colorRoutes);
 app.use('/api/outfits',      outfitRoutes);
 app.use('/api/stacks',       stackRoutes);
+app.use('/api/subcategoria', subcategoriaRoutes);
+app.use('/api/categoria',    categoriaRoutes);
 
 
 // 9) 404 para rutas no encontradas
