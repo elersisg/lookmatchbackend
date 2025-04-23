@@ -17,8 +17,6 @@ router.use(authenticateToken);  // a partir de aquí, todo requiere JWT
  *   get:
  *     summary: Obtener subcategorías por categoría
  *     tags: [Subcategorías]
- *      security:
- *       - BearerAuth: []
  *     parameters:
  *       - in: query
  *         name: categoria
@@ -43,6 +41,6 @@ router.use(authenticateToken);  // a partir de aquí, todo requiere JWT
  *                     type: string
  *                     example: "Camisa"
  */
-router.get('/subcategorias', authenticateToken, subcategoriaController.obtenerPorCategoria);
+router.get('/subcategorias',  subcategoriaController.obtenerPorCategoria);
 
 module.exports = router;
