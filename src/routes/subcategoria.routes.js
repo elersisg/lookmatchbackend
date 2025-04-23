@@ -39,6 +39,6 @@ const subcategoriaController = require('../controllers/subcategoria.controller')
  *                     type: string
  *                     example: "Camisa"
  */
-router.get('/subcategorias',  subcategoriaController.obtenerPorCategoria);
+router.get('/subcategorias', subcategoriaController.obtenerPorCategoria);
 
 module.exports = router;
