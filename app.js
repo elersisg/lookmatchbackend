@@ -68,18 +68,35 @@ const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
 const swaggerOptions = {
   definition: {
     openapi: '3.0.0',
-    info: { title: 'API Lookmatch', version: '1.0.0', description: 'API para gestionar outfits.' },
+    info: {
+      title: 'API Lookmatch',
+      version: '1.0.0',
+      description: 'API para gestionar outfits.'
+    },
     components: {
       securitySchemes: {
-        BearerAuth: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }
+        BearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT'
+        }
       }
     },
-    servers: [{ url: `${BASE_URL}/api`, description: 'API Lookmatch' }]
+    security: [
+      {
+        BearerAuth: []
+      }
+    ],
+    servers: [
+      {
+        url: `${BASE_URL}/api`,
+        description: 'API Lookmatch'
+      }
+    ]
   },
   apis: ['./src/routes/*.js'],
 };
-const swaggerDocs = SwaggerJsdoc(swaggerOptions);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
 
 // Handler GET /api para devolver un status en la raíz de la API
 app.get('/api', (req, res) => {

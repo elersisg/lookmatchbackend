@@ -17,6 +17,8 @@ router.use(authenticateToken);  // a partir de aquí, todo requiere JWT
  *   get:
  *     summary: Obtener subcategorías por categoría
  *     tags: [Subcategorías]
+ *      security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: query
  *         name: categoria

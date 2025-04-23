@@ -18,6 +18,8 @@ router.use(authenticateToken);
  *   get:
  *     summary: Obtener todas las categorías disponibles
  *     tags: [Categorías]
+ *     security:
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: Lista de categorías disponibles
