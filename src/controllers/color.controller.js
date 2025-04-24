@@ -2,6 +2,7 @@ const colorService = require("../services/color.service");
 
 /**
  * Obtiene todos los colores disponibles.
+ * Devuelve: { id_color, color }
  */
 const obtenerColores = async (req, res) => {
   try {
@@ -21,6 +22,7 @@ const obtenerColores = async (req, res) => {
 
 /**
  * Verifica si un color existe por su ID.
+ * Param: idColor
  */
 const existeColor = async (req, res) => {
   try {
@@ -40,7 +42,8 @@ const existeColor = async (req, res) => {
 };
 
 /**
- * Busca un color por su nombre principal.
+ * Busca un color por su nombre.
+ * Param: nombreColor
  */
 const buscarPorNombre = async (req, res) => {
   try {

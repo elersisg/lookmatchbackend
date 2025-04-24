@@ -2,8 +2,8 @@ const ColorModel = require("../models/color.model");
 
 class ColorService {
   /**
-   * Obtiene todos los colores disponibles llamando al modelo.
-   * @returns {Promise<Array>} Lista de colores
+   * Obtiene todos los colores disponibles.
+   * @returns {Promise<Array>} Lista de colores (id_color y color)
    */
   async obtenerColores() {
     try {
@@ -16,7 +16,7 @@ class ColorService {
 
   /**
    * Verifica si un color existe por su ID.
-   * @param {string} idColor
+   * @param {string} idColor - Código hexadecimal del color (ej: '#FFFFFF')
    * @returns {Promise<boolean>}
    */
   async existeColor(idColor) {
@@ -29,8 +29,8 @@ class ColorService {
   }
 
   /**
-   * Busca un color por su nombre principal.
-   * @param {string} nombreColor
+   * Busca un color por su nombre.
+   * @param {string} nombreColor - Nombre del color (ej: "Negro")
    * @returns {Promise<Object|null>} Objeto con id_color o null
    */
   async buscarPorNombre(nombreColor) {
