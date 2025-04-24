@@ -2,12 +2,12 @@ const { pool } = require("../config/dbConfig");
 
 class ColorModel {
   /**
-   * Obtiene todos los colores disponibles mediante el SP.
-   * @returns {Promise<Array>} Lista de colores con id_color, color_principal y color_secundario
+   * Obtiene todos los colores disponibles.
+   * @returns {Promise<Array>} Lista de colores con id_color y color
    */
   static async obtenerColores() {
     try {
-      const query = "SELECT * FROM sp_obtener_colores_disponibles()";
+      const query = "SELECT id_color, color FROM color ORDER BY color";
       const { rows } = await pool.query(query);
       return rows;
     } catch (error) {
@@ -18,7 +18,7 @@ class ColorModel {
 
   /**
    * Verifica si un color existe por su ID.
-   * @param {string} idColor - ID del color
+   * @param {string} idColor - ID del color (ej. '#FFFFFF')
    * @returns {Promise<boolean>} Verdadero si existe, falso si no
    */
   static async existe(idColor) {
@@ -33,13 +33,13 @@ class ColorModel {
   }
 
   /**
-   * Busca un color por su nombre principal.
-   * @param {string} nombreColor - Nombre del color principal
+   * Busca un color por su nombre (campo 'color').
+   * @param {string} nombreColor - Nombre del color (ej. 'Negro')
    * @returns {Promise<Object|null>} Objeto con id_color si lo encuentra, null si no
    */
   static async buscarPorNombre(nombreColor) {
     try {
-      const query = "SELECT id_color FROM color WHERE color_principal = $1";
+      const query = "SELECT id_color FROM color WHERE color = $1";
       const result = await pool.query(query, [nombreColor]);
       return result.rows[0] || null;
     } catch (error) {
