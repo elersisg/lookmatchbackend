@@ -13,13 +13,76 @@ router.use(authenticateToken);
  *   description: Gestión de prendas del usuario
  */
 
-// Obtener todas las prendas del usuario
+/**
+ * @swagger
+ * /prenda:
+ *   get:
+ *     summary: Obtener todas las prendas del usuario
+ *     tags: [Prendas]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Lista de prendas del usuario
+ */
 router.get("/", prendaController.obtenerPrendasUsuario);
 
-// Registrar nueva prenda
+/**
+ * @swagger
+ * /prenda:
+ *   post:
+ *     summary: Registrar una nueva prenda
+ *     tags: [Prendas]
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombre_prenda:
+ *                 type: string
+ *               nombre_categoria:
+ *                 type: string
+ *               nombre_subcategoria:
+ *                 type: string
+ *               estilo:
+ *                 type: string
+ *               color_principal:
+ *                 type: string
+ *               color_secundario:
+ *                 type: string
+ *               ruta:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Prenda registrada correctamente
+ */
 router.post("/", prendaController.registrar);
 
-// Subir imagen
+/**
+ * @swagger
+ * /prenda/upload:
+ *   post:
+ *     summary: Subir imagen de una prenda
+ *     tags: [Prendas]
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               image:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: Imagen subida exitosamente
+ */
 router.post("/upload", prendaController.subirImagen);
 
 // Filtros
@@ -31,7 +94,7 @@ router.get("/filtrar/color/:color", prendaController.filtrarPorColor);
 router.get("/filtrar/estilo/:estilo", prendaController.filtrarPorEstilo);
 router.get("/buscar/:nombre", prendaController.buscarPorNombre);
 
-// Ediciones de prenda
+// Ediciones
 router.patch("/:id/nombre", prendaController.actualizarNombre);
 router.patch("/:id/estilo", prendaController.actualizarEstilo);
 router.patch(
@@ -44,7 +107,7 @@ router.patch("/:id/status", prendaController.actualizarStatus);
 router.get("/categoria/:categoria", prendaController.getByCategory);
 router.get("/me/prendas", prendaController.getUserPrendasByCategory);
 
-// Eliminar prenda
+// Eliminar
 router.delete("/:id", prendaController.eliminarPrenda);
 
 module.exports = router;
