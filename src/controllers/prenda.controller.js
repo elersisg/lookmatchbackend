@@ -1,8 +1,6 @@
-const PrendaService = require('../services/prenda.service');
-const fs = require('fs-extra');
-const { uploadImage } = require ('../middleware/cloudinary.js');
-const RegistrarPrendaDTO = require('../dto/prenda.dto');
-
+const PrendaService = require("../services/prenda.service");
+const fs = require("fs-extra");
+const { uploadImage } = require("../middleware/cloudinary.js");
 
 const subirImagen = async (req, res) => {
   try {
@@ -11,29 +9,21 @@ const subirImagen = async (req, res) => {
     }
 
     const { tempFilePath } = req.files.image;
-
-    // Subir a Cloudinary
     const result = await uploadImage(tempFilePath);
-    
-    // Eliminar el archivo temporal después de subir
     await fs.unlink(tempFilePath);
 
     res.status(200).json({
       public_id: result.public_id,
       secure_url: result.secure_url,
     });
-
   } catch (error) {
     console.error("Error en subirImagen:", error.message);
-
-    // Limpiar el archivo temporal si falla
     if (req.files?.image?.tempFilePath) {
       await fs.unlink(req.files.image.tempFilePath).catch(console.error);
     }
-
-    res.status(500).json({ 
+    res.status(500).json({
       error: "Error al subir la imagen",
-      details: error.message 
+      details: error.message,
     });
   }
 };
@@ -46,15 +36,17 @@ const registrar = async (req, res) => {
       nombre_categoria,
       nombre_subcategoria,
       estilo,
-      color_principal,
-      color_secundario,
-      ruta  
+      color_principal, // <- id_color
+      color_secundario, // <- id_color secundario
+      ruta,
     } = req.body;
 
     if (!ruta) {
-      return res.status(400).json({ error: 'La URL de la imagen es requerida.' });
+      return res
+        .status(400)
+        .json({ error: "La URL de la imagen es requerida." });
     }
-  
+
     const nuevaPrenda = await PrendaService.registrarPrenda({
       id_usuario,
       nombre_prenda,
@@ -63,11 +55,12 @@ const registrar = async (req, res) => {
       estilo,
       color_principal,
       color_secundario,
-      ruta  // Envía directamente la URL
+      ruta,
     });
 
     res.status(201).json(nuevaPrenda);
   } catch (error) {
+    console.error("Error en registrar:", error.message);
     res.status(500).json({ error: error.message });
   }
 };
@@ -78,37 +71,34 @@ const obtenerPrendasUsuario = async (req, res) => {
     const prendas = await PrendaService.obtenerPrendasPorUsuario(id_usuario);
     res.status(200).json(prendas);
   } catch (error) {
-    console.error('Error al obtener las prendas:', error.message);
-    res.status(500).json({ error: 'Error al obtener las prendas' });
+    console.error("Error al obtener las prendas:", error.message);
+    res.status(500).json({ error: "Error al obtener las prendas" });
   }
 };
 
-  
-  const getUserPrendasByCategory = async (req, res) => {
-    try {
-        const { categoria } = req.query;
-        const userId = req.user.id_usuario;
-        
-        const prendas = await PrendaService.getByUserAndCategory(userId, categoria);
-        
-        res.json(prendas);
-    } catch (error) {
-        console.error('Error en getUserPrendasByCategory:', error);
-        res.status(500).json({ error: 'Error al obtener prendas' });
-    }
+const getUserPrendasByCategory = async (req, res) => {
+  try {
+    const { categoria } = req.query;
+    const userId = req.user.id_usuario;
+    const prendas = await PrendaService.getByUserAndCategory(userId, categoria);
+    res.json(prendas);
+  } catch (error) {
+    console.error("Error en getUserPrendasByCategory:", error);
+    res.status(500).json({ error: "Error al obtener prendas" });
   }
+};
 
 const filtrarPorSubcategoria = async (req, res) => {
   try {
     const id_usuario = req.user.id_usuario;
     const subcategoria = req.params.subcategoria;
-    const prendas = await PrendaService.filtrarPrendas({
-      subcategoria
-    }, id_usuario);
+    const prendas = await PrendaService.filtrarPrendas(
+      { subcategoria },
+      id_usuario
+    );
     res.status(200).json(prendas);
   } catch (error) {
-    console.error('Error al filtrar por subcategoría:', error.message);
-    res.status(500).json({ error: 'Error al filtrar prendas' });
+    res.status(500).json({ error: "Error al filtrar prendas" });
   }
 };
 
@@ -116,13 +106,13 @@ const filtrarPorColor = async (req, res) => {
   try {
     const id_usuario = req.user.id_usuario;
     const color = req.params.color;
-    const prendas = await PrendaService.filtrarPrendas({
-      color_principal: color
-    }, id_usuario);
+    const prendas = await PrendaService.filtrarPrendas(
+      { color_principal: color },
+      id_usuario
+    );
     res.status(200).json(prendas);
   } catch (error) {
-    console.error('Error al filtrar por color:', error.message);
-    res.status(500).json({ error: 'Error al filtrar prendas' });
+    res.status(500).json({ error: "Error al filtrar prendas por color" });
   }
 };
 
@@ -130,13 +120,10 @@ const filtrarPorEstilo = async (req, res) => {
   try {
     const id_usuario = req.user.id_usuario;
     const estilo = req.params.estilo;
-    const prendas = await PrendaService.filtrarPrendas({
-      estilo
-    }, id_usuario);
+    const prendas = await PrendaService.filtrarPrendas({ estilo }, id_usuario);
     res.status(200).json(prendas);
   } catch (error) {
-    console.error('Error al filtrar por estilo:', error.message);
-    res.status(500).json({ error: 'Error al filtrar prendas' });
+    res.status(500).json({ error: "Error al filtrar prendas por estilo" });
   }
 };
 
@@ -144,13 +131,13 @@ const buscarPorNombre = async (req, res) => {
   try {
     const id_usuario = req.user.id_usuario;
     const nombre = req.params.nombre;
-    const prendas = await PrendaService.filtrarPrendas({
-      nombre_prenda: nombre
-    }, id_usuario);
+    const prendas = await PrendaService.filtrarPrendas(
+      { nombre_prenda: nombre },
+      id_usuario
+    );
     res.status(200).json(prendas);
   } catch (error) {
-    console.error('Error al buscar por nombre:', error.message);
-    res.status(500).json({ error: 'Error al buscar prendas' });
+    res.status(500).json({ error: "Error al buscar prendas por nombre" });
   }
 };
 
@@ -161,9 +148,8 @@ const actualizarNombre = async (req, res) => {
       req.user.id_usuario,
       { nombre_prenda: req.body.nombre_prenda }
     );
-    res.status(200).json(resultado); 
+    res.status(200).json(resultado);
   } catch (error) {
-    console.error('Error al actualizar nombre:', error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -175,9 +161,8 @@ const actualizarEstilo = async (req, res) => {
       req.user.id_usuario,
       { estilo: req.body.estilo }
     );
-    res.status(200).json(resultado); 
+    res.status(200).json(resultado);
   } catch (error) {
-    console.error('Error al actualizar estilo:', error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -187,22 +172,18 @@ const actualizarColorSecundario = async (req, res) => {
     const resultado = await PrendaService.actualizarCampo(
       req.params.id,
       req.user.id_usuario,
-      {
-        color_secundario: req.body.color_secundario // Ahora envía el nombre
-      }
+      { color_secundario: req.body.color_secundario }
     );
-
-    res.status(200).json(resultado); // Envía el objeto completo 'resultado'
+    res.status(200).json(resultado);
   } catch (error) {
-    console.error('Error al actualizar color secundario:', error);
     res.status(500).json({ error: error.message });
   }
 };
 
 const actualizarStatus = async (req, res) => {
   try {
-    if (typeof req.body.status !== 'boolean') {
-      throw new Error('El campo status debe ser true o false');
+    if (typeof req.body.status !== "boolean") {
+      throw new Error("El campo status debe ser true o false");
     }
 
     const resultado = await PrendaService.actualizarCampo(
@@ -210,57 +191,47 @@ const actualizarStatus = async (req, res) => {
       req.user.id_usuario,
       { status: req.body.status }
     );
-    res.status(200).json(resultado); 
+    res.status(200).json(resultado);
   } catch (error) {
-    console.error('Error al actualizar status:', error);
     res.status(500).json({ error: error.message });
   }
 };
 
 const getByCategory = async (req, res) => {
   try {
-    const userId = req.user.id_usuario; 
+    const userId = req.user.id_usuario;
     const categoria = req.params.categoria;
-
     const prendas = await PrendaService.getByCategory(userId, categoria);
     res.json(prendas);
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Error interno del servidor' });
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 
 const eliminarPrenda = async (req, res) => {
-    try {
-      const id_usuario = req.user.id_usuario;
-      const id_prenda = req.params.id;
-      
-      await PrendaService.eliminarPrenda(id_prenda, id_usuario);
-      res.status(200).json({ mensaje: 'Prenda eliminada correctamente' });
-    } catch (error) {
-      console.error('Error al eliminar prenda:', error.message);
-        if (error.message === 'Prenda no encontrada o no pertenece al usuario') {
-          if(prenda.image?.public_id){  
-            await deleteImage(prenda.image.public_id);
-          }
-        }
-        res.status(500).json({ error: error.message });
-      }
-    }
+  try {
+    const id_usuario = req.user.id_usuario;
+    const id_prenda = req.params.id;
+    await PrendaService.eliminarPrenda(id_prenda, id_usuario);
+    res.status(200).json({ mensaje: "Prenda eliminada correctamente" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-  module.exports = {
-    subirImagen,
-    registrar,
-    obtenerPrendasUsuario,
-    getUserPrendasByCategory,
-    filtrarPorSubcategoria,
-    filtrarPorColor,
-    filtrarPorEstilo,
-    buscarPorNombre,
-    actualizarEstilo,
-    actualizarNombre,
-    actualizarColorSecundario,
-    actualizarStatus,
-    getByCategory,
-    eliminarPrenda
-  };
+module.exports = {
+  subirImagen,
+  registrar,
+  obtenerPrendasUsuario,
+  getUserPrendasByCategory,
+  filtrarPorSubcategoria,
+  filtrarPorColor,
+  filtrarPorEstilo,
+  buscarPorNombre,
+  actualizarNombre,
+  actualizarEstilo,
+  actualizarColorSecundario,
+  actualizarStatus,
+  getByCategory,
+  eliminarPrenda,
+};
