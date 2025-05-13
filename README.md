@@ -1,8 +1,8 @@
-🧥 Lookmatch Backend API
+# 🧥 Lookmatch Backend API
 
 Este backend sirve como núcleo de la aplicación Lookmatch, una plataforma de gestión de outfits que permite a los usuarios registrar, organizar, y generar combinaciones de ropa personalizadas. Está construido sobre Node.js, Express y PostgreSQL.
 
--Características principales
+## - Características principales
 
 Autenticación segura con JWT.
 
@@ -16,7 +16,7 @@ Upload de imágenes a Cloudinary.
 
 Swagger UI para documentación de endpoints.
 
-- Estructura del proyecto
+## - Estructura del proyecto
 
 ```
 lookmatch-backend/
@@ -32,8 +32,8 @@ lookmatch-backend/
 │   L-- middlewares       # Autenticación y manejo de errores
 
 ```
-- Tecnologías utilizadas
-- 
+## - Tecnologías utilizadas
+  
 Node.js – Entorno de ejecución.
 
 Express – Framework para construir la API.
@@ -56,7 +56,7 @@ dotenv – Variables de entorno.
 
 morgan – Logging HTTP.
 
--Instalación
+## - Instalación
 
 Clona el repositorio.
 
@@ -70,7 +70,7 @@ bash
 ```
 npm run dev
 ```
--Core funcional: Generador de outfits
+## - Core funcional: Generador de outfits
 La funcionalidad clave de la app permite al usuario generar un outfit aleatorio combinando:
 
 Prenda superior
@@ -81,7 +81,7 @@ Zapatos
 
 Opcionalmente se filtra por color y estilo. Esta lógica está contenida en OutfitService.generateRandomOutfit.
 
--Despliegue
+## - Despliegue
 
 El backend está desplegado en Render.com.
 
